@@ -1,14 +1,17 @@
-import { useState } from 'react'
-import Movie from './Movie'
-import './App.css'
+import Movie from './pages/Movie'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Home from './pages/Home'
+import './index.scss'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <div>
-      <Movie/>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home/>} />
+        <Route path='/movies' element={ <Movie/>}/>
+      </Routes>
+    </BrowserRouter>
   )
 }
 

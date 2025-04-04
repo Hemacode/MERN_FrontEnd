@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import Button from '../components/button/Button'
+import TextInput from '../components/textInput/TextInput'
 
 const Movie = () => {
   const [title, setTitle] = useState("")
@@ -23,6 +25,8 @@ const Movie = () => {
         }).then((res)=> {
           if(res.ok){
             setTodos([...todos, {title, desc}])
+            setTitle("")
+            setDesc("")
             setMessage("Item added successfully")
             setTimeout(() => {
               setMessage("")
@@ -104,25 +108,29 @@ const Movie = () => {
   },[])
 
   return (
-    <>
-        <div className='row p-3 bg-success text-light'>
+    <div className='d-flex flex-column align-items-center p-4 w-full h-full'>
+        <div className='row p-2 bg-success text-light' cy-test="cy-header-title">
             <h1>Todo Project for MERN Stack</h1>
         </div>
         <div>
           <h3 className='row mt-3'>Add Item</h3>
           {message && <p className='text-success'>{message}</p>}
           <div className='form-group d-flex gap-2'>
-            <input placeholder='Title' onChange={(e) => setTitle(e.target.value)} value={title} className='form-control' type='text'/>
-            <input placeholder='Desc' onChange={(e) => setDesc(e.target.value)}  value={desc} className='form-control' type='text'/>
-            <button className='btn btn-dark' onClick={handleSubmit}>Submit</button>
+            <TextInput cytest="cy-title" placeholder='Title' onChange={(e) => setTitle(e.target.value)} value={title} className=''/>
+            <TextInput cytest="cy-title" placeholder='Title' onChange={(e) => setTitle(e.target.value)} value={desc} className=''/>
+            {/* <input cy-test="cy-title" placeholder='Title' onChange={(e) => setTitle(e.target.value)} value={title} className='form-control' type='text'/>
+            <input cy-test="cy-desc" placeholder='Desc' onChange={(e) => setDesc(e.target.value)}  value={desc} className='form-control' type='text'/> */}
+            <Button text="Submit" cytest="cy-submit" className='btn btn-dark' onClick={handleSubmit} />
+            {/* <button cy-test="cy-submit" className='btn btn-dark' onClick={handleSubmit}>Submit</button> */}
           </div>
           {error && <p className='text-danger'>{error}</p>} 
         </div>
         <div className='row mt-3'>
           <h3>Tasks</h3>
+          {todos.length > 0 ? 
           <ul className='list-group'>
-            {todos.map((item) => {
-              return (<li className='list-group-item my-2 bg-info d-flex justify-content-between align-items-center'> 
+            {todos.map((item, i) => {
+              return (<li key={i} className='list-group-item my-2 bg-info d-flex justify-content-between align-items-center'> 
                 <div className='d-flex flex-column me-2 text-start'>
                   {
                     editId == -1 || editId !== item._id ? <>
@@ -154,9 +162,10 @@ const Movie = () => {
 
             )}
             
-          </ul>
+          </ul> : <h2>isLoading..</h2>
+          }
         </div>
-    </>
+    </div>
   )
 }
 
